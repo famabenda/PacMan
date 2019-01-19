@@ -6,4 +6,10 @@ import lombok.Data;
 public abstract class SpielElement {
     private int xPosition;
     private int yPosition;
+
+
+    public SpielElement(int xPos, int yPos){
+       setXPosition(xPos);
+       setYPosition(yPos);
+    }
 }
