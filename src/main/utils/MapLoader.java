@@ -2,6 +2,7 @@ package utils;
 
 import game.Map;
 
+import java.io.Console;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -21,9 +22,12 @@ public class MapLoader {
             for (int i = 0; i < lines.size(); i++) {
                 stringMap[i] = lines.get(i).split(",");
             }
+            Logger.log("Map succesfully loaded from "+path);
             return new Map(stringMap);
 
         } catch (FileNotFoundException fnfe) {
+
+
             Logger.error("FileNotFoundException in MapLoader (loadMap) with InputPath: " + path);
         }
         return null;
