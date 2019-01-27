@@ -27,4 +27,16 @@ public class Logger {
     public static void debug(String debugLog) {
         System.out.println(CYAN + "[DEBUG] : " + debugLog + RESET);
     }
+
+    public static void print2dimArray(String[][] array, String msg) {
+        Logger.log("------------------------------<Array> " + msg + "--------------------------------------");
+        for (String[] row : array) {
+            for (String entry : row) {
+                Logger.log(entry);
+            }
+            System.out.println();
+        }
+        Logger.log("------------------------------</Array> " + msg + "--------------------------------------");
+
+    }
 }

@@ -1,5 +1,5 @@
 package game.Enums;
 
 public enum Direction {
-    NORTH, OST, SOUTH, WEST
+    NORTH, EAST, SOUTH, WEST, NONE
 }

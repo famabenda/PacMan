@@ -1,11 +1,11 @@
-package game;
+package game.GameObjects;
 
 import lombok.Data;
 
 @Data
 public abstract class SpielElement {
-    private int xPosition;
-    private int yPosition;
+    protected int xPosition;
+    protected int yPosition;
 
 
     public SpielElement(int xPos, int yPos){

@@ -1,4 +1,4 @@
-package game;
+package game.GameObjects;
 
 import lombok.Data;
 
@@ -6,7 +6,8 @@ import lombok.Data;
 public class PacDot extends SpielElement {
     private boolean eaten = false;
 
-    public PacDot(int xPos, int yPos){
-        super(xPos,yPos);
+    public PacDot(int xPos, int yPos) {
+
+        super(xPos, yPos);
     }
 }

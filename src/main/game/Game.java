@@ -1,6 +1,8 @@
 package game;
 
 import game.Enums.GameState;
+import game.GameObjects.Ghost;
+import game.GameObjects.Player;
 import lombok.Data;
 
 @Data
@@ -12,12 +14,13 @@ public class Game {
     private Ghost[] ghosts;
     private GameState gameState;
 
+
     public Game(Map map){
         setMap(map);
         gameState = GameState.RUNNING;
     }
 
-    public void tick(){
-
+    public void move(){
+        map.move();
     }
 }
