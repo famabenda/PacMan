@@ -1,18 +1,12 @@
 package game.GameObjects;
 
 import game.Enums.Direction;
-import game.Map;
-import gui.Gui;
-import javafx.scene.input.KeyCode;
 import lombok.Data;
 import utils.Logger;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-
 @Data
 public class Player extends SpielElement implements Movable {
-    private Direction prevDirection;
+    public static Direction prevDirection;
     public static Direction direction;
     public static boolean tranistion = false;
     public static int pacDotCount = 0;
@@ -22,37 +16,44 @@ public class Player extends SpielElement implements Movable {
     public SpielElement[][] move(SpielElement[][] spielMap) {
         int spielerX = getXPosition();
         int spielerY = getYPosition();
+        boolean hasWallRigth, hasWallAbove, hasWallLeft, hasWallUnder;
         Direction spielerDir = Player.direction;
         int newXPos = 0, newYPos = 0;
-        switch (spielerDir) {
-            case NORTH:
-                newXPos = spielerX;
-                newYPos = spielerY - 1;
-                break;
-            case SOUTH:
-                newXPos = spielerX;
-                newYPos = spielerY + 1;
-                break;
-            case WEST:
-                newXPos = spielerX - 1;
-                newYPos = spielerY;
-                break;
-            case EAST:
-                newXPos = spielerX + 1;
-                newYPos = spielerY;
-        }
+
         Logger.log("Spieler X: " + spielerX + " SpielerY: " + spielerY + " | newX: " + newXPos + " newY: " + newYPos + " x: " + getXPosition() + " y: " + getYPosition());
+
+        if (spielerDir == Direction.NORTH) {
+            newXPos = spielerX;
+            newYPos = spielerY - 1;
+        } else if (spielerDir == Direction.SOUTH) {
+            newXPos = spielerX;
+            newYPos = spielerY + 1;
+        } else if (spielerDir == Direction.WEST) {
+            newXPos = spielerX - 1;
+            newYPos = spielerY;
+        } else if (spielerDir == Direction.EAST) {
+            newXPos = spielerX + 1;
+            newYPos = spielerY;
+        }
 
 
         if (newXPos < 0) newXPos = spielMap.length - 1;
         if (newXPos > spielMap.length - 1) newXPos = 0;
-        if (spielMap[newXPos][newYPos] instanceof Wall) return spielMap;
+//        hasWallRigth = spielMap[spielerX + 1][spielerY] instanceof Wall ? true : false;
+//        hasWallAbove = spielMap[spielerX][spielerY - 1] instanceof Wall ? true : false;
+//        hasWallLeft = spielMap[spielerX - 1][spielerY] instanceof Wall ? true : false;
+//        hasWallUnder = spielMap[spielerX][spielerY + 1] instanceof Wall ? true : false;
+
+        if (spielMap[newXPos][newYPos] instanceof Wall) {
+            direction = prevDirection;
+            return spielMap;
+        }
 
         if (spielMap[newXPos][newYPos] instanceof Ghost) {
 
         }
         if (spielMap[newXPos][newYPos] instanceof PacDot || spielMap[newXPos][newYPos] instanceof EmptySpace) {
-        prevDirection = direction;
+            prevDirection = direction;
             spielMap[spielerX][spielerY] = new EmptySpace(spielerX, spielerY);
             spielMap[newXPos][newYPos] = this;
             setXPosition(newXPos);

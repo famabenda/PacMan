@@ -28,29 +28,32 @@ public class MainFrame extends JFrame implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent keyEvent) {
+
+
 //        if (Player.tranistion) return;
         int keyCode = keyEvent.getKeyCode();
         switch (keyCode) {
 
             case KeyEvent.VK_UP:
                 Logger.log("KEY-UP");
+                if(Player.direction == Direction.NORTH) break;
+                Player.prevDirection = Player.direction;
                 Player.direction = Direction.NORTH;
-                Player.tranistion = true;
                 break;
             case KeyEvent.VK_DOWN:
                 Logger.log("KEY-DOWN");
+                if(Player.direction == Direction.SOUTH) break;
                 Player.direction = Direction.SOUTH;
-                Player.tranistion = true;
                 break;
             case KeyEvent.VK_LEFT:
                 Logger.log("KEY-LEFT");
+                if(Player.direction == Direction.WEST) break;
                 Player.direction = Direction.WEST;
-                Player.tranistion = true;
                 break;
             case KeyEvent.VK_RIGHT:
                 Logger.log("KEY-RIGHT");
+                if(Player.direction == Direction.EAST) break;
                 Player.direction = Direction.EAST;
-                Player.tranistion = true;
                 break;
 
         }

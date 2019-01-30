@@ -1,7 +1,7 @@
 package game;
 
-import game.Enums.Direction;
-import game.GameObjects.*;
+import game.GameObjects.Player;
+import game.GameObjects.SpielElement;
 import lombok.Data;
 import utils.Logger;
 
