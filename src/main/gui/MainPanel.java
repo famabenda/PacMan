@@ -1,18 +1,22 @@
 package gui;
 
+import game.Enums.Direction;
 import game.GameObjects.*;
 import game.Map;
 import lombok.Data;
+import utils.Logger;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 @Data
-public class MainPanel extends JPanel {
+public class MainPanel extends JPanel implements KeyListener {
 
 
     private static final int pacDotSize = Gui.RESOLUTION / 2;
@@ -32,6 +36,7 @@ public class MainPanel extends JPanel {
         init();
         setDoubleBuffered(true);
         this.setLayout(null);
+        addKeyListener(this);
     }
 
     private void init() {
@@ -40,14 +45,11 @@ public class MainPanel extends JPanel {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ;
     }
 
 
     public void paintMap(Map map) {
         setMap(map);
-//        paintAll(this.getGraphics());
-//        repaint();
         repaint();
     }
 
@@ -87,5 +89,49 @@ public class MainPanel extends JPanel {
                 }
             }
         }
+    }
+
+
+    @Override
+    public void keyTyped(KeyEvent keyEvent) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent keyEvent) {
+
+
+//        if (Player.tranistion) return;
+        int keyCode = keyEvent.getKeyCode();
+        switch (keyCode) {
+
+            case KeyEvent.VK_UP:
+                Logger.log("KEY-UP");
+                if (Player.direction == Direction.NORTH) break;
+                Player.prevDirection = Player.direction;
+                Player.direction = Direction.NORTH;
+                break;
+            case KeyEvent.VK_DOWN:
+                Logger.log("KEY-DOWN");
+                if (Player.direction == Direction.SOUTH) break;
+                Player.direction = Direction.SOUTH;
+                break;
+            case KeyEvent.VK_LEFT:
+                Logger.log("KEY-LEFT");
+                if (Player.direction == Direction.WEST) break;
+                Player.direction = Direction.WEST;
+                break;
+            case KeyEvent.VK_RIGHT:
+                Logger.log("KEY-RIGHT");
+                if (Player.direction == Direction.EAST) break;
+                Player.direction = Direction.EAST;
+                break;
+
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent keyEvent) {
+
     }
 }

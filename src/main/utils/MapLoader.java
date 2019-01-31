@@ -22,7 +22,7 @@ public class MapLoader {
                 if (mapAsString[i][j].equals("#")) translatedMap[j][i] = new Wall(j,i);
                 else if (mapAsString[i][j].equals("*")) translatedMap[j][i] = new PacDot(j,i);
                 else if (mapAsString[i][j].equals(" ")) translatedMap[j][i] = new EmptySpace(j,i);
-                else if (mapAsString[i][j].equals("M")) translatedMap[j][i] = new Ghost(j,i, Direction.SOUTH);
+                else if (mapAsString[i][j].equals("M")) translatedMap[j][i] = new Ghost(j,i, Direction.NONE);
                 else if (mapAsString[i][j].equals("P")) translatedMap[j][i] = new Player(j,i, Direction.NONE);
             }
         }

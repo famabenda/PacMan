@@ -11,6 +11,7 @@ public class Player extends SpielElement implements Movable {
     public static boolean tranistion = false;
     public static int pacDotCount = 0;
     private double speed = 1;
+    private int lives = 3;
 
     @Override
     public SpielElement[][] move(SpielElement[][] spielMap) {
