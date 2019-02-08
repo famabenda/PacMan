@@ -2,6 +2,7 @@ package game.GameObjects;
 
 import game.Enums.Direction;
 import lombok.Data;
+import utils.SoundPlayer;
 
 import java.util.ArrayList;
 
@@ -31,16 +32,22 @@ public class Player extends SpielElement implements Movable {
     }
 
     private ArrayList<Direction> getPossibleDirections(SpielElement[][][] spielMap) {
-
         ArrayList<Direction> possibleDirections = new ArrayList<>();
+        try {
 
-        if (!(spielMap[xPosition][yPosition - 1][0] instanceof Wall)) possibleDirections.add(Direction.NORTH);
-        if (!(spielMap[xPosition][yPosition + 1][0] instanceof Wall)) possibleDirections.add(Direction.SOUTH);
-        if (!(spielMap[xPosition - 1][yPosition][0] instanceof Wall)) possibleDirections.add(Direction.WEST);
-        if (!(spielMap[xPosition + 1][yPosition][0] instanceof Wall)) possibleDirections.add(Direction.EAST);
+            if (!(spielMap[xPosition][yPosition - 1][0] instanceof Wall)) possibleDirections.add(Direction.NORTH);
+            if (!(spielMap[xPosition][yPosition + 1][0] instanceof Wall)) possibleDirections.add(Direction.SOUTH);
+            if (!(spielMap[xPosition - 1][yPosition][0] instanceof Wall)) possibleDirections.add(Direction.WEST);
+            if (!(spielMap[xPosition + 1][yPosition][0] instanceof Wall)) possibleDirections.add(Direction.EAST);
 
+            return possibleDirections;
+        } catch (IndexOutOfBoundsException ioobe) {
+            if (xPosition - 1 < 0 && !(spielMap[spielMap.length-1][yPosition][0] instanceof Wall))
+                possibleDirections.add(Direction.WEST);
+            if (xPosition + 1 > spielMap.length-1 && !(spielMap[0][yPosition][0] instanceof Wall))
+                possibleDirections.add(Direction.EAST);
+        }
         return possibleDirections;
-
     }
 
     private SpielElement[][][] movePlayer(SpielElement[][][] spielMap, Direction direction) {
@@ -69,13 +76,14 @@ public class Player extends SpielElement implements Movable {
         }
 
         if (spielMap[newXPos][newYPos][0] instanceof PacDot || spielMap[newXPos][newYPos][0] instanceof EmptySpace) {
+            if (spielMap[newXPos][newYPos][0] instanceof PacDot) {
+                SoundPlayer.playChompSound();
+                pacDotCount++;
+            }
             spielMap[spielerX][spielerY][0] = new EmptySpace(spielerX, spielerY);
             spielMap[newXPos][newYPos][0] = this;
             setXPosition(newXPos);
             setYPosition(newYPos);
-            if (spielMap[newXPos][newYPos][0] instanceof PacDot) {
-                pacDotCount++;
-            }
         }
 
         return spielMap;

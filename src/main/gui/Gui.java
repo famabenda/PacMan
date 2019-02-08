@@ -11,10 +11,10 @@ import javax.swing.*;
 @Data
 public class Gui {
 
-    public static int RESOLUTION = 45;
+    public static int RESOLUTION = 40;
     public static final int SCREEN_WIDTH = 25 * RESOLUTION;
     public static final int SCREEN_HEIGHT = 25 * RESOLUTION;
-    public static int fps = 20;
+    public static int fps = 10;
 
     private MainFrame mainFrame;
     private Map currentMap;

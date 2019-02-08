@@ -52,7 +52,7 @@ public class Ghost extends SpielElement implements Movable {
                 return moveEast(spielMap);
         }
 
-            return spielMap;
+        return spielMap;
     }
 
     private SpielElement[][][] moveNorth(SpielElement[][][] spielMap) {
@@ -96,16 +96,15 @@ public class Ghost extends SpielElement implements Movable {
 
         ArrayList<Direction> possibleDirections = new ArrayList<>();
         Logger.debug("x: " + xPosition + " y: " + yPosition);
-
         if (!Map.isWallOrGhost(xPosition, yPosition - 1, spielMap)) possibleDirections.add(Direction.NORTH);
         if (!Map.isWallOrGhost(xPosition, yPosition + 1, spielMap)) possibleDirections.add(Direction.SOUTH);
-        if (!Map.isWallOrGhost(xPosition - 1, yPosition, spielMap)) possibleDirections.add(Direction.WEST);
+        if (!Map.isWallOrGhost(xPosition - 1, yPosition, spielMap))possibleDirections.add(Direction.WEST);
         if (!Map.isWallOrGhost(xPosition + 1, yPosition, spielMap)) possibleDirections.add(Direction.EAST);
+
 
         return possibleDirections;
 
     }
-
 
 
 }

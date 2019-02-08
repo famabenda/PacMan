@@ -81,6 +81,10 @@ public class Map {
     }
 
     public static boolean isWallOrGhost(int x, int y, SpielElement[][][] spielMap) {
-        return spielMap[x][y][0] instanceof Wall || spielMap[x][y][1] instanceof Ghost;
+        try {
+            return spielMap[x][y][0] instanceof Wall || spielMap[x][y][1] instanceof Ghost;
+        } catch (IndexOutOfBoundsException ioobe) {
+            return true;
+        }
     }
 }
