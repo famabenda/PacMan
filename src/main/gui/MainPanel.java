@@ -4,6 +4,7 @@ import game.Enums.Direction;
 import game.GameObjects.*;
 import game.Map;
 import lombok.Data;
+import org.imgscalr.Scalr;
 import utils.Logger;
 
 import javax.imageio.ImageIO;
@@ -21,15 +22,15 @@ public class MainPanel extends JPanel implements KeyListener {
 
     private static final int pacDotSize = Gui.RESOLUTION / 2;
 
-    private static final Color wallColor = Color.BLACK;
+    private static final Color backgroundColor = Color.black;
+    private static final Color wallColor = Color.blue;
     private static final Color pacDotColor = Color.YELLOW;
-    private static final Color emptySpaceColor = Color.LIGHT_GRAY;
-    private static final Color ghostColor = Color.WHITE;
+    private static final Color emptySpaceColor = backgroundColor;
     private static final Color playerColor = Color.RED;
 
 
     private BufferedImage pacDotImage;
-
+    private BufferedImage ghostDownImage;
     private Map map;
 
     public MainPanel() {
@@ -41,10 +42,17 @@ public class MainPanel extends JPanel implements KeyListener {
 
     private void init() {
         try {
-            pacDotImage = ImageIO.read(new File(getClass().getClassLoader().getResource("images/pacdot.png").getFile()));
+            pacDotImage = ImageIO.read(new File(getClass().getClassLoader().getResource("images/PacDot.png").getFile()));
+            ghostDownImage = ImageIO.read(new File(getClass().getClassLoader().getResource("images/Blinky_MoveDown.gif").getFile()));
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+
+    public BufferedImage scaleImage(BufferedImage image, int resolution) {
+
+        return Scalr.resize(image, resolution);
     }
 
 
@@ -55,6 +63,7 @@ public class MainPanel extends JPanel implements KeyListener {
 
     public void paint(Graphics g) {
 
+        setBackground(backgroundColor);
         Graphics2D g2 = (Graphics2D) g;
         removeAll();
 
@@ -70,21 +79,24 @@ public class MainPanel extends JPanel implements KeyListener {
                     g2.fillRect((int) (x * res), (int) (y * res), res, res);
                 }
                 if (map.getSpielMap()[i][j] instanceof PacDot) {
-                    g2.setColor(pacDotColor);
-//                    g2.drawImage(pacDotImage, x * Gui.RESOLUTION, y * Gui.RESOLUTION, null);
-                    g2.fillRect((int) ((x * res)) + res / 4, (int) ((y * res) + res / 4), pacDotSize, pacDotSize);
+                    g.setColor(backgroundColor);
+                    g.fillRect((int) x * res, (int) y * res, res, res);
+                    g.drawImage(scaleImage(pacDotImage, res / 4), (int) ((x * res)) + (res / 2) - res / 8, (int) ((y * res) + (res / 2) - res / 8), null)
+                    ;
                 }
                 if (map.getSpielMap()[i][j] instanceof EmptySpace) {
                     g2.setColor(emptySpaceColor);
                     g2.fillRect((int) x * res, (int) y * res, res, res);
                 }
                 if (map.getSpielMap()[i][j] instanceof Ghost) {
-                    g2.setColor(ghostColor);
-                    g2.drawString("G", (int) ((x * res) + res / 4), (int) ((y * res) + res / 2));
+                    g.setColor(backgroundColor);
+                    g.fillRect((int) x * res, (int) y * res, res, res);
+                    g.drawImage(scaleImage(ghostDownImage, res / 2), (int) ((x * res)) + (res / 2) - res / 4, (int) ((y * res) + (res / 2) - res / 4), null);
                 }
                 if (map.getSpielMap()[i][j] instanceof Player) {
+                    g.setColor(backgroundColor);
+                    g.fillRect((int) x * res, (int) y * res, res, res);
                     g2.setColor(playerColor);
-//                    g.drawString("P", (x * res)+res/4, (y * res)+res/4);
                     g2.fillRect((int) ((x * res) + res / 4), (int) ((y * res) + res / 4), pacDotSize, pacDotSize);
                 }
             }

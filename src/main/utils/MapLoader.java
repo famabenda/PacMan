@@ -1,10 +1,10 @@
 package utils;
 
 import game.Enums.Direction;
+import game.Enums.MapElements;
 import game.GameObjects.*;
 import game.Map;
 
-import java.io.Console;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -14,16 +14,23 @@ public class MapLoader {
 
 
     public Map loadMap(String path) {
+        Map.ghostCount = 0;
         String[][] mapAsString = loadMapAsString(path);
         SpielElement[][] translatedMap = new SpielElement[mapAsString[0].length][mapAsString.length];
         for (int i = 0; i < mapAsString.length; i++) {
             for (int j = 0; j < mapAsString[0].length; j++) {
 
-                if (mapAsString[i][j].equals("#")) translatedMap[j][i] = new Wall(j,i);
-                else if (mapAsString[i][j].equals("*")) translatedMap[j][i] = new PacDot(j,i);
-                else if (mapAsString[i][j].equals(" ")) translatedMap[j][i] = new EmptySpace(j,i);
-                else if (mapAsString[i][j].equals("M")) translatedMap[j][i] = new Ghost(j,i, Direction.NONE);
-                else if (mapAsString[i][j].equals("P")) translatedMap[j][i] = new Player(j,i, Direction.NONE);
+                if (mapAsString[i][j].equals(MapElements.WALL_SYMBOL.getMapCode()))
+                    translatedMap[j][i] = new Wall(j, i);
+                else if (mapAsString[i][j].equals(MapElements.PACDOT_SYMBOL.getMapCode()))
+                    translatedMap[j][i] = new PacDot(j, i);
+                else if (mapAsString[i][j].equals(MapElements.EMPTY_SPACE_SYMBOL.getMapCode()))
+                    translatedMap[j][i] = new EmptySpace(j, i);
+                else if (mapAsString[i][j].equals(MapElements.GHOST_SYMBOL.getMapCode())) {
+                    translatedMap[j][i] = new Ghost(j, i, Direction.SOUTH);
+                    Map.ghostCount++;
+                } else if (mapAsString[i][j].equals(MapElements.PLAYER_SYMBOL.getMapCode()))
+                    translatedMap[j][i] = new Player(j, i, Direction.NORTH);
             }
         }
         return new Map(translatedMap);

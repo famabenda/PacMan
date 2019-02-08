@@ -1,21 +1,15 @@
 package game;
 
-import game.GameObjects.Ghost;
-import game.GameObjects.PacDot;
-import game.GameObjects.Player;
-import game.GameObjects.SpielElement;
+import game.GameObjects.*;
 import lombok.Data;
 import utils.Logger;
-
-import java.util.Arrays;
 
 @Data
 public class Map {
 
 
     private SpielElement[][] spielMap;
-    private Player spieler;
-    private Ghost[] ghosts;
+    public static int ghostCount;
 
     public Map(SpielElement[][] map) {
         setSpielMap(map);
@@ -33,7 +27,7 @@ public class Map {
     }
 
     public Ghost[] getGhosts() {
-        Ghost[] ghosts = new Ghost[4];
+        Ghost[] ghosts = new Ghost[ghostCount];
         int index = 0;
         for (SpielElement[] reihe : spielMap) {
             for (SpielElement element : reihe) {
@@ -59,10 +53,14 @@ public class Map {
 
     public void move() {
         spielMap = getSpieler().move(spielMap);
-        ghosts = getGhosts();
+        Ghost[] ghosts = getGhosts();
 
         for(Ghost ghost : ghosts){
             spielMap = ghost.move(spielMap);
         }
+    }
+
+    public static boolean isWallOrGhost(int x, int y, SpielElement[][] spielMap){
+        return spielMap[x][y] instanceof Wall || spielMap[x][y] instanceof Ghost;
     }
 }

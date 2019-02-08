@@ -18,7 +18,7 @@ public class GameOrchestrator {
     private static Gui gui;
     private static Game game;
     private static MapLoader mapLoader;
-    private static int gameSpeed = 300;
+    private static int gameSpeed = 500;
 
     public static void main(String[] args) {
         run();
@@ -51,10 +51,7 @@ public class GameOrchestrator {
                 }
             }
         }).start();
-
-
     }
-
 
     private static void checkGameState() {
         GameState state = game.evaluateGameState();
@@ -75,7 +72,7 @@ public class GameOrchestrator {
         gui.showGameView();
         runGame();
         gui.paintGame();
-        SoundPlayer.playStartMusic();
+        new SoundPlayer().playStartMusic();
     }
 
 

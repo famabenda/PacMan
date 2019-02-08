@@ -1,5 +1,6 @@
 package utils;
 
+import sun.audio.AudioPlayer;
 import sun.audio.AudioStream;
 
 import java.io.IOException;
@@ -12,10 +13,11 @@ public class SoundPlayer {
 
     }
 
-    public static void playStartMusic() {
-        InputStream startMusik = SoundPlayer.class.getResourceAsStream("sounds/pacman_beginning.wav");
+    public  void playStartMusic() {
+        InputStream startMusik = getClass().getClassLoader().getResourceAsStream("sounds/pacman_beginning.wav");
         try {
             AudioStream audioStream = new AudioStream(startMusik);
+            AudioPlayer.player.start(audioStream);
         } catch (IOException ioe) {
             Logger.error("Can't find soundfile pacman_beginning_wav");
         }
