@@ -1,7 +1,6 @@
 package game;
 
 import game.Enums.GameState;
-import game.GameObjects.Ghost;
 import game.GameObjects.Player;
 import lombok.Data;
 
@@ -11,7 +10,6 @@ public class Game {
 
     private Map map;
     private Player player;
-    private Ghost[] ghosts;
 
 
     public Game(Map map){

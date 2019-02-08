@@ -25,12 +25,14 @@ public class MainPanel extends JPanel implements KeyListener {
     private static final Color backgroundColor = Color.black;
     private static final Color wallColor = Color.blue;
     private static final Color pacDotColor = Color.YELLOW;
-    private static final Color emptySpaceColor = backgroundColor;
     private static final Color playerColor = Color.RED;
 
 
     private BufferedImage pacDotImage;
     private BufferedImage ghostDownImage;
+    private BufferedImage ghostUpImage;
+    private BufferedImage ghostLeftImage;
+    private BufferedImage ghostRightImage;
     private Map map;
 
     public MainPanel() {
@@ -44,6 +46,9 @@ public class MainPanel extends JPanel implements KeyListener {
         try {
             pacDotImage = ImageIO.read(new File(getClass().getClassLoader().getResource("images/PacDot.png").getFile()));
             ghostDownImage = ImageIO.read(new File(getClass().getClassLoader().getResource("images/Blinky_MoveDown.gif").getFile()));
+            ghostUpImage = ImageIO.read(new File(getClass().getClassLoader().getResource("images/Blinky_MoveUp.gif").getFile()));
+            ghostLeftImage = ImageIO.read(new File(getClass().getClassLoader().getResource("images/Blinky_MoveLeft.gif").getFile()));
+            ghostRightImage = ImageIO.read(new File(getClass().getClassLoader().getResource("images/Blinky_MoveRight.gif").getFile()));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -68,32 +73,45 @@ public class MainPanel extends JPanel implements KeyListener {
         removeAll();
 
         int res = Gui.RESOLUTION;
-        for (int i = 0; i < map.getSpielMap().length; i++) {
+        for (int i = 0; i < map.getSpielMap()[0].length - 1; i++) {
             for (int j = 0; j < map.getSpielMap()[0].length; j++) {
 
-                double x = map.getSpielMap()[i][j].getXPosition();
+                double x = map.getSpielMap()[i][j][0].getXPosition();
 
-                double y = map.getSpielMap()[i][j].getYPosition();
-                if (map.getSpielMap()[i][j] instanceof Wall) {
+                double y = map.getSpielMap()[i][j][0].getYPosition();
+                if (map.getSpielMap()[i][j][0] instanceof Wall) {
                     g2.setColor(wallColor);
                     g2.fillRect((int) (x * res), (int) (y * res), res, res);
                 }
-                if (map.getSpielMap()[i][j] instanceof PacDot) {
+                if (map.getSpielMap()[i][j][0] instanceof PacDot) {
                     g.setColor(backgroundColor);
                     g.fillRect((int) x * res, (int) y * res, res, res);
-                    g.drawImage(scaleImage(pacDotImage, res / 4), (int) ((x * res)) + (res / 2) - res / 8, (int) ((y * res) + (res / 2) - res / 8), null)
-                    ;
+                    g.drawImage(scaleImage(pacDotImage, res / 4), (int) ((x * res)) + (res / 2) - res / 8, (int) ((y * res) + (res / 2) - res / 8), null);
                 }
-                if (map.getSpielMap()[i][j] instanceof EmptySpace) {
-                    g2.setColor(emptySpaceColor);
+                if (map.getSpielMap()[i][j][0] instanceof EmptySpace) {
+                    g2.setColor(backgroundColor);
                     g2.fillRect((int) x * res, (int) y * res, res, res);
                 }
-                if (map.getSpielMap()[i][j] instanceof Ghost) {
-                    g.setColor(backgroundColor);
-                    g.fillRect((int) x * res, (int) y * res, res, res);
-                    g.drawImage(scaleImage(ghostDownImage, res / 2), (int) ((x * res)) + (res / 2) - res / 4, (int) ((y * res) + (res / 2) - res / 4), null);
+                if (map.getSpielMap()[i][j][1] instanceof Ghost) {
+//                    g.setColor(backgroundColor);
+//                    g.fillRect((int) x * res, (int) y * res, res, res);
+                    switch (((Ghost) map.getSpielMap()[i][j][1]).getDirection()) {
+                        case EAST:
+                            paintGhost(ghostRightImage, x, y, res, g);
+                            break;
+                        case SOUTH:
+                            paintGhost(ghostDownImage, x, y, res, g);
+                            break;
+                        case NORTH:
+                            paintGhost(ghostUpImage, x, y, res, g);
+                            break;
+                        case WEST:
+                            paintGhost(ghostLeftImage, x, y, res, g);
+                            break;
+                    }
+
                 }
-                if (map.getSpielMap()[i][j] instanceof Player) {
+                if (map.getSpielMap()[i][j][0] instanceof Player) {
                     g.setColor(backgroundColor);
                     g.fillRect((int) x * res, (int) y * res, res, res);
                     g2.setColor(playerColor);
@@ -101,6 +119,10 @@ public class MainPanel extends JPanel implements KeyListener {
                 }
             }
         }
+    }
+
+    private void paintGhost(BufferedImage image, double x, double y, int res, Graphics g) {
+        g.drawImage(scaleImage(image, res / 2), (int) ((x * res)) + (res / 2) - res / 4, (int) ((y * res) + (res / 2) - res / 4), null);
     }
 
 
@@ -111,34 +133,29 @@ public class MainPanel extends JPanel implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent keyEvent) {
-
-
-//        if (Player.tranistion) return;
         int keyCode = keyEvent.getKeyCode();
         switch (keyCode) {
 
             case KeyEvent.VK_UP:
                 Logger.log("KEY-UP");
                 if (Player.direction == Direction.NORTH) break;
-                Player.prevDirection = Player.direction;
-                Player.direction = Direction.NORTH;
+                Player.lastPressedDirection = Direction.NORTH;
                 break;
             case KeyEvent.VK_DOWN:
                 Logger.log("KEY-DOWN");
                 if (Player.direction == Direction.SOUTH) break;
-                Player.direction = Direction.SOUTH;
+                Player.lastPressedDirection = Direction.SOUTH;
                 break;
             case KeyEvent.VK_LEFT:
                 Logger.log("KEY-LEFT");
                 if (Player.direction == Direction.WEST) break;
-                Player.direction = Direction.WEST;
+                Player.lastPressedDirection = Direction.WEST;
                 break;
             case KeyEvent.VK_RIGHT:
                 Logger.log("KEY-RIGHT");
                 if (Player.direction == Direction.EAST) break;
-                Player.direction = Direction.EAST;
+                Player.lastPressedDirection = Direction.EAST;
                 break;
-
         }
     }
 

@@ -2,5 +2,5 @@ package game.GameObjects;
 
 public interface Movable {
 
-    SpielElement[][] move(SpielElement[][] spielMap);
+    SpielElement[][][] move(SpielElement[][][] spielMap);
 }

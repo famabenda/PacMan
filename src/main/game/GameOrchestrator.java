@@ -18,7 +18,7 @@ public class GameOrchestrator {
     private static Gui gui;
     private static Game game;
     private static MapLoader mapLoader;
-    private static int gameSpeed = 500;
+    private static int gameSpeed = 200;
 
     public static void main(String[] args) {
         run();
