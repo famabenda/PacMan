@@ -1,6 +1,7 @@
 package utils;
 
 import game.Enums.Direction;
+import game.Enums.GhostBehaviour;
 import game.Enums.MapElements;
 import game.GameObjects.*;
 import game.Map;
@@ -27,9 +28,10 @@ public class MapLoader {
                 else if (mapAsString[i][j].equals(MapElements.EMPTY_SPACE_SYMBOL.getMapCode()))
                     translatedMap[j][i][0] = new EmptySpace(j, i);
                 else if (mapAsString[i][j].equals(MapElements.GHOST_SYMBOL.getMapCode())) {
-                    translatedMap[j][i][1] = new Ghost(j, i, Direction.SOUTH);
-                    translatedMap[j][i][0] = new EmptySpace(j,i);
                     Map.ghostCount++;
+                    if(Map.ghostCount<4) translatedMap[j][i][1] = new Ghost(j, i, Direction.SOUTH, GhostBehaviour.RANDOM);
+                    else translatedMap[j][i][1] = new Ghost(j, i, Direction.SOUTH, GhostBehaviour.FOLLOW);
+                    translatedMap[j][i][0] = new EmptySpace(j,i);
                 } else if (mapAsString[i][j].equals(MapElements.PLAYER_SYMBOL.getMapCode()))
                     translatedMap[j][i][0] = new Player(j, i, Direction.NORTH);
             }

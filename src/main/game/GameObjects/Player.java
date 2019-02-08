@@ -42,9 +42,9 @@ public class Player extends SpielElement implements Movable {
 
             return possibleDirections;
         } catch (IndexOutOfBoundsException ioobe) {
-            if (xPosition - 1 < 0 && !(spielMap[spielMap.length-1][yPosition][0] instanceof Wall))
+            if (xPosition - 1 < 0 && !(spielMap[spielMap.length - 1][yPosition][0] instanceof Wall))
                 possibleDirections.add(Direction.WEST);
-            if (xPosition + 1 > spielMap.length-1 && !(spielMap[0][yPosition][0] instanceof Wall))
+            if (xPosition + 1 > spielMap.length - 1 && !(spielMap[0][yPosition][0] instanceof Wall))
                 possibleDirections.add(Direction.EAST);
         }
         return possibleDirections;

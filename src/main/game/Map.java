@@ -1,5 +1,6 @@
 package game;
 
+import game.Enums.GhostBehaviour;
 import game.GameObjects.*;
 import lombok.Data;
 import utils.Logger;
@@ -17,16 +18,6 @@ public class Map {
 
 
     public Player getSpieler() {
-
-
-        for (SpielElement[][] ebene : spielMap) {
-            for (SpielElement[] reihe : ebene) {
-                if (reihe[0] instanceof Ghost) {
-                    return (Player) reihe[0];
-                }
-            }
-        }
-
 
         for (SpielElement[][] ebene : spielMap) {
             for (SpielElement[] reihe : ebene) {
@@ -76,7 +67,8 @@ public class Map {
         Ghost[] ghosts = getGhosts();
 
         for (Ghost ghost : ghosts) {
-            spielMap = ghost.move(spielMap);
+            if (ghost.getBehaviour() == GhostBehaviour.RANDOM) ghost.move(spielMap);
+            else spielMap = ghost.moveFollow(spielMap);
         }
     }
 
