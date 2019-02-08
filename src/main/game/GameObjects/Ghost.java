@@ -31,7 +31,6 @@ public class Ghost extends SpielElement implements Movable {
         ArrayList<Direction> possibleDirections = new ArrayList<>();
         Logger.debug("x: " + xPosition + " y: " + yPosition);
 
-
         if (!Map.isWallOrGhost(ghostX, ghostY - 1, spielMap)) possibleDirections.add(Direction.NORTH);
         if (!Map.isWallOrGhost(ghostX, ghostY + 1, spielMap)) possibleDirections.add(Direction.SOUTH);
         if (!Map.isWallOrGhost(ghostX - 1, ghostY, spielMap)) possibleDirections.add(Direction.WEST);
@@ -88,41 +87,48 @@ public class Ghost extends SpielElement implements Movable {
 
 
     private SpielElement[][] moveNorth(SpielElement[][] spielMap) {
-        spielMap[xPosition][yPosition - 1] = spielMap[xPosition][yPosition];
-        if (standingOnPacDot) spielMap[xPosition][yPosition] = new PacDot(xPosition, yPosition);
-        else spielMap[xPosition][yPosition] = new EmptySpace(xPosition, yPosition);
+
+
+        if(standingOnPacDot) spielMap[xPosition][yPosition] = new PacDot(xPosition,yPosition);
+        else spielMap[xPosition][yPosition] = new EmptySpace(xPosition,yPosition);
+        standingOnPacDot = spielMap[xPosition][yPosition-1] instanceof PacDot;
+        spielMap[xPosition][yPosition - 1] = this;
         direction = Direction.NORTH;
         yPosition--;
         return spielMap;
     }
 
     private SpielElement[][] moveWest(SpielElement[][] spielMap) {
-        if (xPosition - 1 < 0) xPosition = spielMap.length - 1;
-        spielMap[xPosition - 1][yPosition] = spielMap[xPosition][yPosition];
-        if (standingOnPacDot) spielMap[xPosition][yPosition] = new PacDot(xPosition, yPosition);
-        else spielMap[xPosition][yPosition] = new EmptySpace(xPosition, yPosition);
+        if(standingOnPacDot) spielMap[xPosition][yPosition] = new PacDot(xPosition,yPosition);
+        else spielMap[xPosition][yPosition] = new EmptySpace(xPosition,yPosition);
+        standingOnPacDot = spielMap[xPosition-1][yPosition] instanceof PacDot;
+        spielMap[xPosition - 1][yPosition] = this;
         direction = Direction.WEST;
         xPosition--;
         return spielMap;
     }
 
     private SpielElement[][] moveEast(SpielElement[][] spielMap) {
-        if (xPosition + 1 > spielMap.length - 1) xPosition = 0;
-        spielMap[xPosition + 1][yPosition] = spielMap[xPosition][yPosition];
-        if (standingOnPacDot) spielMap[xPosition][yPosition] = new PacDot(xPosition, yPosition);
-        else spielMap[xPosition][yPosition] = new EmptySpace(xPosition, yPosition);
+        if(standingOnPacDot) spielMap[xPosition][yPosition] = new PacDot(xPosition,yPosition);
+        else spielMap[xPosition][yPosition] = new EmptySpace(xPosition,yPosition);
+        standingOnPacDot = spielMap[xPosition+1][yPosition] instanceof PacDot;
+        spielMap[xPosition + 1][yPosition] = this;
         direction = Direction.EAST;
         xPosition++;
         return spielMap;
     }
 
     private SpielElement[][] moveSouth(SpielElement[][] spielMap) {
-        spielMap[xPosition][yPosition + 1] = spielMap[xPosition][yPosition];
-        if (standingOnPacDot) spielMap[xPosition][yPosition] = new PacDot(xPosition, yPosition);
-        else spielMap[xPosition][yPosition] = new EmptySpace(xPosition, yPosition);
+        if(standingOnPacDot) spielMap[xPosition][yPosition] = new PacDot(xPosition,yPosition);
+        else spielMap[xPosition][yPosition] = new EmptySpace(xPosition,yPosition);
+        standingOnPacDot = spielMap[xPosition][yPosition+1] instanceof PacDot;
+        spielMap[xPosition][yPosition + 1] = this;
         direction = Direction.SOUTH;
         yPosition++;
         return spielMap;
     }
+
+
+
 
 }
