@@ -14,12 +14,12 @@ public class SoundPlayer {
     }
 
     public  void playStartMusic() {
-        InputStream startMusik = getClass().getClassLoader().getResourceAsStream("sounds/pacman_beginning.wav");
-        try {
-            AudioStream audioStream = new AudioStream(startMusik);
-            AudioPlayer.player.start(audioStream);
-        } catch (IOException ioe) {
-            Logger.error("Can't find soundfile pacman_beginning_wav");
-        }
+//        InputStream startMusik = getClass().getClassLoader().getResourceAsStream("sounds/pacman_beginning.wav");
+//        try {
+//            AudioStream audioStream = new AudioStream(startMusik);
+//            AudioPlayer.player.start(audioStream);
+//        } catch (IOException ioe) {
+//            Logger.error("Can't find soundfile pacman_beginning_wav");
+//        }
     }
 }

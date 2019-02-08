@@ -49,6 +49,7 @@ public class Ghost extends SpielElement implements Movable {
         if (possibleDirections.size() == 0) return spielMap;
         Direction newDirection = Direction.NONE;
         if (possibleDirections.size() > 1) {
+            Logger.log("Orgin: "+ Direction.invertDirection(direction));
             Direction originDirection = Direction.invertDirection(direction);
             for (int i = 0; i < possibleDirections.size(); i++) {
                 if (possibleDirections.get(i) == originDirection) {
@@ -90,6 +91,7 @@ public class Ghost extends SpielElement implements Movable {
         spielMap[xPosition][yPosition - 1] = spielMap[xPosition][yPosition];
         if (standingOnPacDot) spielMap[xPosition][yPosition] = new PacDot(xPosition, yPosition);
         else spielMap[xPosition][yPosition] = new EmptySpace(xPosition, yPosition);
+        direction = Direction.NORTH;
         yPosition--;
         return spielMap;
     }
@@ -99,6 +101,7 @@ public class Ghost extends SpielElement implements Movable {
         spielMap[xPosition - 1][yPosition] = spielMap[xPosition][yPosition];
         if (standingOnPacDot) spielMap[xPosition][yPosition] = new PacDot(xPosition, yPosition);
         else spielMap[xPosition][yPosition] = new EmptySpace(xPosition, yPosition);
+        direction = Direction.WEST;
         xPosition--;
         return spielMap;
     }
@@ -108,6 +111,7 @@ public class Ghost extends SpielElement implements Movable {
         spielMap[xPosition + 1][yPosition] = spielMap[xPosition][yPosition];
         if (standingOnPacDot) spielMap[xPosition][yPosition] = new PacDot(xPosition, yPosition);
         else spielMap[xPosition][yPosition] = new EmptySpace(xPosition, yPosition);
+        direction = Direction.EAST;
         xPosition++;
         return spielMap;
     }
@@ -116,6 +120,7 @@ public class Ghost extends SpielElement implements Movable {
         spielMap[xPosition][yPosition + 1] = spielMap[xPosition][yPosition];
         if (standingOnPacDot) spielMap[xPosition][yPosition] = new PacDot(xPosition, yPosition);
         else spielMap[xPosition][yPosition] = new EmptySpace(xPosition, yPosition);
+        direction = Direction.SOUTH;
         yPosition++;
         return spielMap;
     }
