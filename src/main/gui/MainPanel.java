@@ -1,8 +1,13 @@
 package gui;
 
-import game.enums.Direction;
-import game.gameObjects.*;
+import game.Game;
+import game.GameOrchestrator;
 import game.Map;
+import game.enums.Direction;
+import game.gameObjects.EmptySpace;
+import game.gameObjects.PacDot;
+import game.gameObjects.Player;
+import game.gameObjects.Wall;
 import game.gameObjects.ghosts.Ghost;
 import lombok.Data;
 import org.imgscalr.Scalr;
@@ -114,6 +119,8 @@ public class MainPanel extends JPanel implements KeyListener {
                 }
             }
         }
+        g.setColor(Color.red);
+        g.drawString("Score: " +Game.collectedPacDots * GameOrchestrator.multiplier, 10,10);
     }
 
     private void paintGhost(BufferedImage image, double x, double y, int res, Graphics g) {

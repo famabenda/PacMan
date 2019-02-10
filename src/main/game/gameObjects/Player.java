@@ -1,5 +1,8 @@
 package game.gameObjects;
 
+import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
+import game.Game;
+import game.GameOrchestrator;
 import game.enums.Direction;
 import lombok.Data;
 import utils.SoundPlayer;
@@ -10,10 +13,9 @@ import java.util.ArrayList;
 public class Player extends SpielElement implements Movable {
     public static Direction direction;
     public static boolean tranistion = false;
-    public static int pacDotCount = 0;
     public static Direction lastPressedDirection = Direction.NONE;
     private double speed = 1;
-    public static int lives = 3;
+    public static int lives = GameOrchestrator.PLAYER_LIVES;
 
 
     public Player(int xPos, int yPos, Direction direction) {
@@ -34,6 +36,10 @@ public class Player extends SpielElement implements Movable {
     @Override
     public void loadSprites() {
 
+    }
+
+    public static void reset(){
+        lives = GameOrchestrator.PLAYER_LIVES;
     }
 
     private ArrayList<Direction> getPossibleDirections(SpielElement[][][] spielMap) {
@@ -83,7 +89,7 @@ public class Player extends SpielElement implements Movable {
         if (spielMap[newXPos][newYPos][0] instanceof PacDot || spielMap[newXPos][newYPos][0] instanceof EmptySpace) {
             if (spielMap[newXPos][newYPos][0] instanceof PacDot) {
                 SoundPlayer.playChompSound();
-                pacDotCount++;
+                Game.collectedPacDots++;
             }
             spielMap[spielerX][spielerY][0] = new EmptySpace(spielerX, spielerY);
             spielMap[newXPos][newYPos][0] = this;

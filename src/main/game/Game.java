@@ -4,12 +4,12 @@ import game.enums.GameState;
 import game.gameObjects.Player;
 import game.gameObjects.ghosts.Ghost;
 import lombok.Data;
-import utils.Logger;
 
 @Data
 public class Game {
 
 
+    public static int collectedPacDots;
     private Map map;
     private Player player;
 
@@ -34,7 +34,6 @@ public class Game {
 
     public boolean playerAndGhostCollision() {
         Player spieler = map.getSpieler();
-        Logger.log("Player and Ghost had a collision");
         return getMap().getSpielMap()[spieler.getXPosition()][spieler.getYPosition()][1] instanceof Ghost;
     }
 }

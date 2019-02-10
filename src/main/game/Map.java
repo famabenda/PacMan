@@ -1,6 +1,5 @@
 package game;
 
-import game.enums.GameState;
 import game.gameObjects.PacDot;
 import game.gameObjects.Player;
 import game.gameObjects.SpielElement;
@@ -13,13 +12,20 @@ import utils.Logger;
 public class Map {
 
 
-    private SpielElement[][][] spielMap;
     public static int ghostCount;
+    private SpielElement[][][] spielMap;
 
     public Map(SpielElement[][][] map) {
         setSpielMap(map);
     }
 
+    public static boolean isWallOrGhost(int x, int y, SpielElement[][][] spielMap) {
+        try {
+            return spielMap[x][y][0] instanceof Wall || spielMap[x][y][1] instanceof Ghost;
+        } catch (IndexOutOfBoundsException ioobe) {
+            return true;
+        }
+    }
 
     public Player getSpieler() {
 
@@ -64,7 +70,6 @@ public class Map {
         return false;
     }
 
-
     public void move() {
         spielMap = getSpieler().move(spielMap);
         GameOrchestrator.checkGameState();
@@ -72,18 +77,9 @@ public class Map {
 
         for (Ghost ghost : ghosts) {
             ghost.move(spielMap);
-            GameOrchestrator.checkGameState();
         }
+        GameOrchestrator.checkGameState();
 
 
-    }
-
-
-    public static boolean isWallOrGhost(int x, int y, SpielElement[][][] spielMap) {
-        try {
-            return spielMap[x][y][0] instanceof Wall || spielMap[x][y][1] instanceof Ghost;
-        } catch (IndexOutOfBoundsException ioobe) {
-            return true;
-        }
     }
 }
