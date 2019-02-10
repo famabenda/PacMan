@@ -1,10 +1,13 @@
 package utils;
 
-import game.Enums.Direction;
-import game.Enums.GhostBehaviour;
-import game.Enums.MapElements;
-import game.GameObjects.*;
 import game.Map;
+import game.enums.Direction;
+import game.enums.MapElements;
+import game.gameObjects.*;
+import game.gameObjects.ghosts.Blinky;
+import game.gameObjects.ghosts.Clyde;
+import game.gameObjects.ghosts.Inky;
+import game.gameObjects.ghosts.Pinky;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -29,9 +32,21 @@ public class MapLoader {
                     translatedMap[j][i][0] = new EmptySpace(j, i);
                 else if (mapAsString[i][j].equals(MapElements.GHOST_SYMBOL.getMapCode())) {
                     Map.ghostCount++;
-                    if(Map.ghostCount<4) translatedMap[j][i][1] = new Ghost(j, i, Direction.SOUTH, GhostBehaviour.RANDOM);
-                    else translatedMap[j][i][1] = new Ghost(j, i, Direction.SOUTH, GhostBehaviour.FOLLOW);
-                    translatedMap[j][i][0] = new EmptySpace(j,i);
+                    switch (Map.ghostCount) {
+                        case 1:
+                            translatedMap[j][i][1] = new Blinky(j, i, Direction.SOUTH);
+                            break;
+                        case 2:
+                            translatedMap[j][i][1] = new Inky(j, i, Direction.SOUTH);
+                            break;
+                        case 3:
+                            translatedMap[j][i][1] = new Pinky(j, i, Direction.SOUTH);
+                            break;
+                        case 4:
+                            translatedMap[j][i][1] = new Clyde(j, i, Direction.SOUTH);
+                            break;
+                    }
+                    translatedMap[j][i][0] = new EmptySpace(j, i);
                 } else if (mapAsString[i][j].equals(MapElements.PLAYER_SYMBOL.getMapCode()))
                     translatedMap[j][i][0] = new Player(j, i, Direction.NORTH);
             }

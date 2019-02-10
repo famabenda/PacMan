@@ -1,4 +1,4 @@
-package game.Enums;
+package game.enums;
 
 public enum MapElements {
     PACDOT_SYMBOL("*"), WALL_SYMBOL("#"),EMPTY_SPACE_SYMBOL(" "),PLAYER_SYMBOL("P"),GHOST_SYMBOL("G");

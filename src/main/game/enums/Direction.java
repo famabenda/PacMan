@@ -1,4 +1,4 @@
-package game.Enums;
+package game.enums;
 
 public enum Direction {
     EAST, NORTH, SOUTH, WEST, NONE;

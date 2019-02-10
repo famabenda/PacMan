@@ -1,7 +1,11 @@
 package game;
 
-import game.Enums.GhostBehaviour;
-import game.GameObjects.*;
+import game.enums.GameState;
+import game.gameObjects.PacDot;
+import game.gameObjects.Player;
+import game.gameObjects.SpielElement;
+import game.gameObjects.Wall;
+import game.gameObjects.ghosts.Ghost;
 import lombok.Data;
 import utils.Logger;
 
@@ -45,7 +49,6 @@ public class Map {
                 }
             }
         }
-        System.out.println("");
         return ghosts;
     }
 
@@ -64,13 +67,17 @@ public class Map {
 
     public void move() {
         spielMap = getSpieler().move(spielMap);
+        GameOrchestrator.checkGameState();
         Ghost[] ghosts = getGhosts();
 
         for (Ghost ghost : ghosts) {
-            if (ghost.getBehaviour() == GhostBehaviour.RANDOM) ghost.move(spielMap);
-            else spielMap = ghost.moveFollow(spielMap);
+            ghost.move(spielMap);
+            GameOrchestrator.checkGameState();
         }
+
+
     }
+
 
     public static boolean isWallOrGhost(int x, int y, SpielElement[][][] spielMap) {
         try {

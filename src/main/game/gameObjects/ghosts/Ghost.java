@@ -1,29 +1,29 @@
-package game.GameObjects;
+package game.gameObjects.ghosts;
 
-import game.Enums.Direction;
-import game.Enums.GhostBehaviour;
-import game.GameObjects.Movable;
-import game.GameObjects.SpielElement;
 import game.Map;
-import gui.MainPanel;
-import jdk.nashorn.internal.ir.annotations.Ignore;
+import game.enums.Direction;
+import game.gameObjects.Movable;
+import game.gameObjects.Player;
+import game.gameObjects.SpielElement;
 import lombok.Data;
-import sun.security.provider.ConfigFile;
 import utils.Logger;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 @Data
-public class Ghost extends SpielElement implements Movable {
-    private Direction direction;
+public abstract class Ghost extends SpielElement implements Movable {
+    protected Direction direction;
     private double speed = 1;
     private boolean standingOnPacDot = false;
-    private GhostBehaviour behaviour;
+    protected BufferedImage imageDown;
+    protected BufferedImage imageUp;
+    protected BufferedImage imageLeft;
+    protected BufferedImage imageRight;
 
-    public Ghost(int xPos, int yPos, Direction direction, GhostBehaviour behaviour) {
+    public Ghost(int xPos, int yPos, Direction direction) {
         super(xPos, yPos);
         setDirection(direction);
-        setBehaviour(behaviour);
     }
 
 
@@ -41,37 +41,7 @@ public class Ghost extends SpielElement implements Movable {
                 }
             }
             int random = (int) (Math.random() * possibleDirections.size());
-            newDirection = possibleDirections.get(random);
-        } else newDirection = possibleDirections.get(0);
-
-        switch (newDirection) {
-            case NORTH:
-                return moveNorth(spielMap);
-            case WEST:
-                return moveWest(spielMap);
-            case SOUTH:
-                return moveSouth(spielMap);
-            case EAST:
-                return moveEast(spielMap);
-        }
-
-        return spielMap;
-    }
-
-    public SpielElement[][][] moveFollow(SpielElement[][][] spielMap) {
-        ArrayList<Direction> possibleDirections = getPossibleDirections(spielMap);
-        if (possibleDirections.size() == 0) return spielMap;
-        Direction newDirection = Direction.NONE;
-        if (possibleDirections.size() > 1) {
-            Direction originDirection = Direction.invertDirection(direction);
-            for (int i = 0; i < possibleDirections.size(); i++) {
-                if (possibleDirections.get(i) == originDirection) {
-                    possibleDirections.remove(i);
-                    break;
-                }
-            }
             newDirection = getBestMove(possibleDirections, spielMap);
-
         } else newDirection = possibleDirections.get(0);
 
 
@@ -89,24 +59,13 @@ public class Ghost extends SpielElement implements Movable {
         return spielMap;
     }
 
-    private Direction getBestMove(ArrayList<Direction> possibleDirections, SpielElement[][][] spielMap) {
-        Player spieler = getSpieler(spielMap);
 
-        if (spieler.getYPosition() > this.yPosition && possibleDirections.contains(Direction.SOUTH))
-            return Direction.SOUTH;
-        if (spieler.getYPosition() < this.yPosition && possibleDirections.contains(Direction.NORTH))
-            return Direction.NORTH;
-        if (spieler.getXPosition() > this.xPosition && possibleDirections.contains(Direction.EAST))
-            return Direction.EAST;
-        if (spieler.getXPosition() < this.xPosition && possibleDirections.contains(Direction.WEST))
-            return Direction.WEST;
-
-        return possibleDirections.get((int) (possibleDirections.size() * Math.random() - 1));
-
+    protected Direction getBestMove(ArrayList<Direction> possibleDirections, SpielElement[][][] spielMap) {
+        return null;
     }
 
 
-    public Player getSpieler(SpielElement[][][] spielMap) {
+    protected Player getSpieler(SpielElement[][][] spielMap) {
 
         for (SpielElement[][] ebene : spielMap) {
             for (SpielElement[] reihe : ebene) {
@@ -120,7 +79,7 @@ public class Ghost extends SpielElement implements Movable {
 
     }
 
-    private SpielElement[][][] moveNorth(SpielElement[][][] spielMap) {
+    protected SpielElement[][][] moveNorth(SpielElement[][][] spielMap) {
 
         spielMap[xPosition][yPosition - 1][1] = this;
         spielMap[xPosition][yPosition][1] = null;
@@ -129,7 +88,7 @@ public class Ghost extends SpielElement implements Movable {
         return spielMap;
     }
 
-    private SpielElement[][][] moveWest(SpielElement[][][] spielMap) {
+    protected SpielElement[][][] moveWest(SpielElement[][][] spielMap) {
 
         spielMap[xPosition - 1][yPosition][1] = this;
         spielMap[xPosition][yPosition][1] = null;
@@ -138,7 +97,7 @@ public class Ghost extends SpielElement implements Movable {
         return spielMap;
     }
 
-    private SpielElement[][][] moveEast(SpielElement[][][] spielMap) {
+    protected SpielElement[][][] moveEast(SpielElement[][][] spielMap) {
 
         spielMap[xPosition + 1][yPosition][1] = this;
         spielMap[xPosition][yPosition][1] = null;
@@ -147,7 +106,7 @@ public class Ghost extends SpielElement implements Movable {
         return spielMap;
     }
 
-    private SpielElement[][][] moveSouth(SpielElement[][][] spielMap) {
+    protected SpielElement[][][] moveSouth(SpielElement[][][] spielMap) {
 
         spielMap[xPosition][yPosition + 1][1] = this;
         spielMap[xPosition][yPosition][1] = null;
@@ -157,7 +116,7 @@ public class Ghost extends SpielElement implements Movable {
     }
 
 
-    private ArrayList<Direction> getPossibleDirections(SpielElement[][][] spielMap) {
+    protected ArrayList<Direction> getPossibleDirections(SpielElement[][][] spielMap) {
 
         ArrayList<Direction> possibleDirections = new ArrayList<>();
         Logger.debug("x: " + xPosition + " y: " + yPosition);
@@ -169,6 +128,23 @@ public class Ghost extends SpielElement implements Movable {
 
         return possibleDirections;
 
+    }
+
+    public BufferedImage getImageDown() {
+        return imageDown;
+    }
+
+    public BufferedImage getImageUp() {
+        return imageUp;
+    }
+
+    public BufferedImage getImageLeft() {
+
+        return imageLeft;
+    }
+
+    public BufferedImage getImageRight() {
+        return imageRight;
     }
 
 

@@ -1,4 +1,4 @@
-package game.GameObjects;
+package game.gameObjects;
 
 import lombok.Data;
 

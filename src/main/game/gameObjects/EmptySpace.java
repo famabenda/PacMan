@@ -1,4 +1,4 @@
-package game.GameObjects;
+package game.gameObjects;
 
 public class EmptySpace extends SpielElement {
 

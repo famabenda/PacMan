@@ -1,8 +1,9 @@
 package gui;
 
-import game.Enums.Direction;
-import game.GameObjects.*;
+import game.enums.Direction;
+import game.gameObjects.*;
 import game.Map;
+import game.gameObjects.ghosts.Ghost;
 import lombok.Data;
 import org.imgscalr.Scalr;
 import utils.Logger;
@@ -29,10 +30,7 @@ public class MainPanel extends JPanel implements KeyListener {
 
 
     private BufferedImage pacDotImage;
-    private BufferedImage ghostDownImage;
-    private BufferedImage ghostUpImage;
-    private BufferedImage ghostLeftImage;
-    private BufferedImage ghostRightImage;
+
     private Map map;
 
     public MainPanel() {
@@ -45,10 +43,7 @@ public class MainPanel extends JPanel implements KeyListener {
     private void init() {
         try {
             pacDotImage = ImageIO.read(new File(getClass().getClassLoader().getResource("images/PacDot.png").getFile()));
-            ghostDownImage = ImageIO.read(new File(getClass().getClassLoader().getResource("images/Blinky_MoveDown.gif").getFile()));
-            ghostUpImage = ImageIO.read(new File(getClass().getClassLoader().getResource("images/Blinky_MoveUp.gif").getFile()));
-            ghostLeftImage = ImageIO.read(new File(getClass().getClassLoader().getResource("images/Blinky_MoveLeft.gif").getFile()));
-            ghostRightImage = ImageIO.read(new File(getClass().getClassLoader().getResource("images/Blinky_MoveRight.gif").getFile()));
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -97,16 +92,16 @@ public class MainPanel extends JPanel implements KeyListener {
 //                    g.fillRect((int) x * res, (int) y * res, res, res);
                     switch (((Ghost) map.getSpielMap()[i][j][1]).getDirection()) {
                         case EAST:
-                            paintGhost(ghostRightImage, x, y, res, g);
+                            paintGhost(((Ghost) map.getSpielMap()[i][j][1]).getImageRight(), x, y, res, g);
                             break;
                         case SOUTH:
-                            paintGhost(ghostDownImage, x, y, res, g);
+                            paintGhost(((Ghost) map.getSpielMap()[i][j][1]).getImageDown(), x, y, res, g);
                             break;
                         case NORTH:
-                            paintGhost(ghostUpImage, x, y, res, g);
+                            paintGhost(((Ghost) map.getSpielMap()[i][j][1]).getImageUp(), x, y, res, g);
                             break;
                         case WEST:
-                            paintGhost(ghostLeftImage, x, y, res, g);
+                            paintGhost(((Ghost) map.getSpielMap()[i][j][1]).getImageLeft(), x, y, res, g);
                             break;
                     }
 

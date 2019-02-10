@@ -1,6 +1,6 @@
-package game.GameObjects;
+package game.gameObjects;
 
-import game.Enums.Direction;
+import game.enums.Direction;
 import lombok.Data;
 import utils.SoundPlayer;
 
@@ -13,7 +13,7 @@ public class Player extends SpielElement implements Movable {
     public static int pacDotCount = 0;
     public static Direction lastPressedDirection = Direction.NONE;
     private double speed = 1;
-    private int lives = 3;
+    public static int lives = 3;
 
 
     public Player(int xPos, int yPos, Direction direction) {
@@ -29,6 +29,11 @@ public class Player extends SpielElement implements Movable {
         }
         movePlayer(spielMap, direction);
         return spielMap;
+    }
+
+    @Override
+    public void loadSprites() {
+
     }
 
     private ArrayList<Direction> getPossibleDirections(SpielElement[][][] spielMap) {
