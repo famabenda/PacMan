@@ -14,7 +14,7 @@ import javax.swing.*;
 public class GameOrchestrator {
 
 
-    public static boolean running;
+    public static boolean running = false;
 
     private static Gui gui;
     private static Game game;
@@ -73,9 +73,9 @@ public class GameOrchestrator {
 
     public static void startGame() {
         gui.showGameView();
+        running = true;
         runGame();
         gui.paintGame();
-        running = true;
         new SoundPlayer().playStartMusic();
     }
 
