@@ -4,6 +4,7 @@ import game.enums.GameState;
 import game.gameObjects.Player;
 import gui.Gui;
 import lombok.Data;
+import utils.Logger;
 import utils.MapLoader;
 import utils.SoundPlayer;
 
@@ -12,17 +13,15 @@ import javax.swing.*;
 @Data
 public class GameOrchestrator {
 
-    public static int PLAYER_LIVES = 300;
-
+    public static int PLAYER_LIVES = 3;
+    public static int MULTIPLIER = 100;
     public static boolean running = false;
-    public static int multiplier = 100;
-
+    public static Thread gameThread;
     private static String mapPath = "map/pacmanMap.txt";
     private static Gui gui;
     private static Game game;
     private static MapLoader mapLoader;
     private static int gameSpeed = 200;
-    private static Thread gameThread;
 
     public static void main(String[] args) {
         run();
@@ -35,15 +34,11 @@ public class GameOrchestrator {
 
     private static void runGame() {
         gui.showGameView();
-        gameThread = new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                synchronized (this) {
-                    while (running) {
-                        game.move();
-                        gameWait(gameSpeed);
-                    }
+        gameThread = new Thread(() -> {
+            synchronized (gameThread) {
+                while (running) {
+                    game.move();
+                    gameWait(gameSpeed);
                 }
             }
         });
@@ -51,7 +46,15 @@ public class GameOrchestrator {
     }
 
     public static void checkGameState() {
-        if (game.playerAndGhostCollision()) Player.lives--;
+        if (game.playerAndGhostCollision()) {
+            Player.lives--;
+            SoundPlayer.playPlayerDeathSound();
+            gameWait(2000);
+            game.setMap(mapLoader.resetMovableObjects(game.getMap().getSpielMap(), mapPath));
+            gui.setCurrentMap(game.getMap());
+            return;
+        }
+
         GameState state = game.evaluateGameState();
         switch (state) {
             case RUNNING:
@@ -81,6 +84,7 @@ public class GameOrchestrator {
             e.printStackTrace();
         }
     }
+
 
 
     public static void startGame() {

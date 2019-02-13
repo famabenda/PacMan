@@ -35,6 +35,7 @@ public class Clyde extends Ghost implements Movable {
     }
 
 
+    @Override
     protected Direction getBestMove(ArrayList<Direction> possibleDirections, SpielElement[][][] spielMap) {
         Player spieler = super.getSpieler(spielMap);
 

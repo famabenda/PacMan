@@ -4,10 +4,7 @@ import game.Map;
 import game.enums.Direction;
 import game.enums.MapElements;
 import game.gameObjects.*;
-import game.gameObjects.ghosts.Blinky;
-import game.gameObjects.ghosts.Clyde;
-import game.gameObjects.ghosts.Inky;
-import game.gameObjects.ghosts.Pinky;
+import game.gameObjects.ghosts.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -15,6 +12,52 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class MapLoader {
+
+
+    public Map resetMovableObjects(SpielElement[][][] spielMap, String mapPath) {
+        String[][] mapAsString = loadMapAsString(mapPath);
+        for(String[] row : mapAsString){
+            for(String entry : row){
+                Logger.log(entry);
+            }
+        }
+        for (int i = 0; i < mapAsString.length; i++) {
+            for (int j = 0; j < mapAsString[0].length; j++) {
+                if (spielMap[j][i][1] instanceof Ghost) spielMap[j][i][1] = null;
+                if (spielMap[j][i][0] instanceof Player) spielMap[j][i][0] = new EmptySpace(j, i);
+                if (mapAsString[i][j].equals(MapElements.BLINKY_SYMBOL.getMapCode())) {
+                    spielMap[j][i][1] = new Blinky(j, i, Direction.SOUTH);
+                    spielMap[j][i][0] = new EmptySpace(j, i);
+                }
+                if (mapAsString[i][j].equals(MapElements.INKY_SYMBOL.getMapCode())) {
+                    spielMap[j][i][1] = new Inky(j, i, Direction.SOUTH);
+                    spielMap[j][i][0] = new EmptySpace(j, i);
+                }
+                if (mapAsString[i][j].equals(MapElements.PINKY_SYMBOL.getMapCode())) {
+                    spielMap[j][i][1] = new Pinky(j, i, Direction.SOUTH);
+                    spielMap[j][i][0] = new EmptySpace(j, i);
+                }
+                if (mapAsString[i][j].equals(MapElements.CLYDE_SYMBOL.getMapCode())) {
+                    spielMap[j][i][1] = new Clyde(j, i, Direction.SOUTH);
+                    spielMap[j][i][0] = new EmptySpace(j, i);
+                }
+                if (mapAsString[i][j].equals(MapElements.USER_SYMBOL.getMapCode())) {
+                    spielMap[j][i][0] = new Player(j, i, Direction.NORTH);
+                }
+            }
+        }
+        for (SpielElement[][] ebene : spielMap) {
+            for (SpielElement[] reihe : ebene) {
+                for (SpielElement element : reihe) {
+                    if (element instanceof Player) Logger.debug("PLAYER FOUND!!!!!!!!!!!!!!!!!");
+                }
+            }
+        }
+
+
+        Logger.log("Map successfully reloaded after player-death");
+        return new Map(spielMap);
+    }
 
 
     public Map loadMap(String path) {
@@ -30,24 +73,23 @@ public class MapLoader {
                     translatedMap[j][i][0] = new PacDot(j, i);
                 else if (mapAsString[i][j].equals(MapElements.EMPTY_SPACE_SYMBOL.getMapCode()))
                     translatedMap[j][i][0] = new EmptySpace(j, i);
-                else if (mapAsString[i][j].equals(MapElements.GHOST_SYMBOL.getMapCode())) {
+                else if (mapAsString[i][j].equals(MapElements.BLINKY_SYMBOL.getMapCode())) {
+                    translatedMap[j][i][1] = new Blinky(j, i, Direction.SOUTH);
                     Map.ghostCount++;
-                    switch (Map.ghostCount) {
-                        case 1:
-                            translatedMap[j][i][1] = new Blinky(j, i, Direction.SOUTH);
-                            break;
-                        case 2:
-                            translatedMap[j][i][1] = new Inky(j, i, Direction.SOUTH);
-                            break;
-                        case 3:
-                            translatedMap[j][i][1] = new Pinky(j, i, Direction.SOUTH);
-                            break;
-                        case 4:
-                            translatedMap[j][i][1] = new Clyde(j, i, Direction.SOUTH);
-                            break;
-                    }
                     translatedMap[j][i][0] = new EmptySpace(j, i);
-                } else if (mapAsString[i][j].equals(MapElements.PLAYER_SYMBOL.getMapCode()))
+                } else if (mapAsString[i][j].equals(MapElements.PINKY_SYMBOL.getMapCode())) {
+                    translatedMap[j][i][1] = new Pinky(j, i, Direction.SOUTH);
+                    Map.ghostCount++;
+                    translatedMap[j][i][0] = new EmptySpace(j, i);
+                } else if (mapAsString[i][j].equals(MapElements.INKY_SYMBOL.getMapCode())) {
+                    translatedMap[j][i][1] = new Inky(j, i, Direction.SOUTH);
+                    Map.ghostCount++;
+                    translatedMap[j][i][0] = new EmptySpace(j, i);
+                } else if (mapAsString[i][j].equals(MapElements.CLYDE_SYMBOL.getMapCode())) {
+                    translatedMap[j][i][1] = new Clyde(j, i, Direction.SOUTH);
+                    Map.ghostCount++;
+                    translatedMap[j][i][0] = new EmptySpace(j, i);
+                } else if (mapAsString[i][j].equals(MapElements.USER_SYMBOL.getMapCode()))
                     translatedMap[j][i][0] = new Player(j, i, Direction.NORTH);
             }
         }

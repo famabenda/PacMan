@@ -14,12 +14,11 @@ import java.util.ArrayList;
 @Data
 public abstract class Ghost extends SpielElement implements Movable {
     protected Direction direction;
-    private double speed = 1;
-    private boolean standingOnPacDot = false;
     protected BufferedImage imageDown;
     protected BufferedImage imageUp;
     protected BufferedImage imageLeft;
     protected BufferedImage imageRight;
+    private double speed = 1;
 
     public Ghost(int xPos, int yPos, Direction direction) {
         super(xPos, yPos);
@@ -40,7 +39,6 @@ public abstract class Ghost extends SpielElement implements Movable {
                     break;
                 }
             }
-            int random = (int) (Math.random() * possibleDirections.size());
             newDirection = getBestMove(possibleDirections, spielMap);
         } else newDirection = possibleDirections.get(0);
 
@@ -60,9 +58,7 @@ public abstract class Ghost extends SpielElement implements Movable {
     }
 
 
-    protected Direction getBestMove(ArrayList<Direction> possibleDirections, SpielElement[][][] spielMap) {
-        return null;
-    }
+    protected Direction getBestMove(ArrayList<Direction> possibleDirections, SpielElement[][][] spielMap) {return null;}
 
 
     protected Player getSpieler(SpielElement[][][] spielMap) {

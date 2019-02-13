@@ -6,7 +6,6 @@ import sun.audio.AudioStream;
 import javax.sound.sampled.*;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Properties;
 
 public class SoundPlayer {
 
@@ -40,12 +39,27 @@ public class SoundPlayer {
         }
     }
 
+
+    public static void playPlayerDeathSound() {
+        try {
+            playSound(AudioSystem.getAudioInputStream(SoundPlayer.class.getClassLoader().getResourceAsStream("sounds/pacman_death.wav")));
+
+        } catch (UnsupportedAudioFileException e) {
+            Logger.error("UnsupportedAudioFileException in SoundPlayer while playing player-death sound");
+        } catch (IOException ioe) {
+            Logger.error("Can't find soundfile pacman_death");
+
+
+        }
+    }
+
     private static void playSound(AudioInputStream sound) {
         try {
             clip = AudioSystem.getClip();
 
             clip.open(sound);
             clip.start();
+
         } catch (LineUnavailableException lue) {
             Logger.error("LineUnavailableException in SoundPlayer while playing sound: " + sound);
 
@@ -53,4 +67,6 @@ public class SoundPlayer {
             Logger.error("IO-Exception in SoundPlayer while playing sound: " + sound);
         }
     }
+
+
 }

@@ -67,17 +67,19 @@ public class MainPanel extends JPanel implements KeyListener {
     }
 
     public void paint(Graphics g) {
-
         setBackground(backgroundColor);
         Graphics2D g2 = (Graphics2D) g;
         removeAll();
 
         int res = Gui.RESOLUTION;
-        for (int i = 0; i < map.getSpielMap()[0].length - 1; i++) {
+        for (int i = 0; i < map.getSpielMap().length; i++) {
             for (int j = 0; j < map.getSpielMap()[0].length; j++) {
-
-                double x = map.getSpielMap()[i][j][0].getXPosition();
-
+                double x=3;
+                try {
+                    x = map.getSpielMap()[i][j][0].getXPosition();
+                }catch (NullPointerException npe){
+                    Logger.debug("x: "+i+" y: "+j);
+                }
                 double y = map.getSpielMap()[i][j][0].getYPosition();
                 if (map.getSpielMap()[i][j][0] instanceof Wall) {
                     g2.setColor(wallColor);
@@ -91,6 +93,12 @@ public class MainPanel extends JPanel implements KeyListener {
                 if (map.getSpielMap()[i][j][0] instanceof EmptySpace) {
                     g2.setColor(backgroundColor);
                     g2.fillRect((int) x * res, (int) y * res, res, res);
+                }
+                if (map.getSpielMap()[i][j][0] instanceof Player) {
+                    g.setColor(backgroundColor);
+                    g.fillRect((int) x * res, (int) y * res, res, res);
+                    g2.setColor(playerColor);
+                    g2.fillRect((int) ((x * res) + res / 4), (int) ((y * res) + res / 4), pacDotSize, pacDotSize);
                 }
                 if (map.getSpielMap()[i][j][1] instanceof Ghost) {
 //                    g.setColor(backgroundColor);
@@ -111,16 +119,10 @@ public class MainPanel extends JPanel implements KeyListener {
                     }
 
                 }
-                if (map.getSpielMap()[i][j][0] instanceof Player) {
-                    g.setColor(backgroundColor);
-                    g.fillRect((int) x * res, (int) y * res, res, res);
-                    g2.setColor(playerColor);
-                    g2.fillRect((int) ((x * res) + res / 4), (int) ((y * res) + res / 4), pacDotSize, pacDotSize);
-                }
             }
         }
         g.setColor(Color.red);
-        g.drawString("Score: " +Game.collectedPacDots * GameOrchestrator.multiplier, 10,10);
+        g.drawString("Score: " +Game.collectedPacDots * GameOrchestrator.MULTIPLIER, 10,10);
     }
 
     private void paintGhost(BufferedImage image, double x, double y, int res, Graphics g) {

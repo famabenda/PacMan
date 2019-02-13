@@ -8,11 +8,8 @@ import lombok.Data;
 import utils.Logger;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 
 @Data
@@ -40,7 +37,6 @@ public class Blinky extends Ghost implements Movable {
     }
 
 
-    @SuppressWarnings("Duplicates")
     @Override
     protected Direction getBestMove(ArrayList<Direction> possibleDirections, SpielElement[][][] spielMap) {
         Player spieler = super.getSpieler(spielMap);

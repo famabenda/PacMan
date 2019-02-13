@@ -28,7 +28,6 @@ public class Map {
     }
 
     public Player getSpieler() {
-
         for (SpielElement[][] ebene : spielMap) {
             for (SpielElement[] reihe : ebene) {
                 for (SpielElement element : reihe) {
@@ -71,15 +70,16 @@ public class Map {
     }
 
     public void move() {
+        if(getSpieler() == null) return ;
         spielMap = getSpieler().move(spielMap);
         GameOrchestrator.checkGameState();
         Ghost[] ghosts = getGhosts();
 
+        if(ghosts.length<ghostCount) return;
         for (Ghost ghost : ghosts) {
             ghost.move(spielMap);
         }
         GameOrchestrator.checkGameState();
-
 
     }
 }

@@ -19,6 +19,7 @@ public class Gui {
     private MainFrame mainFrame;
     private Map currentMap;
     private JTabbedPane tabbedPane;
+    private Thread paintThread;
 
     public Gui() {
         mainFrame = new MainFrame();
@@ -28,7 +29,7 @@ public class Gui {
 
     public void paintGame() {
         if (currentMap == null) return;
-        new Thread(new Runnable() {
+        paintThread = new Thread(new Runnable() {
 
             @Override
             public void run() {
@@ -45,7 +46,8 @@ public class Gui {
                     }
                 }
             }
-        }).start();
+        });
+        paintThread.start();
     }
 
     public void showGameView(){
