@@ -16,11 +16,6 @@ public class MapLoader {
 
     public Map resetMovableObjects(SpielElement[][][] spielMap, String mapPath) {
         String[][] mapAsString = loadMapAsString(mapPath);
-        for(String[] row : mapAsString){
-            for(String entry : row){
-                Logger.log(entry);
-            }
-        }
         for (int i = 0; i < mapAsString.length; i++) {
             for (int j = 0; j < mapAsString[0].length; j++) {
                 if (spielMap[j][i][1] instanceof Ghost) spielMap[j][i][1] = null;
@@ -43,13 +38,6 @@ public class MapLoader {
                 }
                 if (mapAsString[i][j].equals(MapElements.USER_SYMBOL.getMapCode())) {
                     spielMap[j][i][0] = new Player(j, i, Direction.NORTH);
-                }
-            }
-        }
-        for (SpielElement[][] ebene : spielMap) {
-            for (SpielElement[] reihe : ebene) {
-                for (SpielElement element : reihe) {
-                    if (element instanceof Player) Logger.debug("PLAYER FOUND!!!!!!!!!!!!!!!!!");
                 }
             }
         }

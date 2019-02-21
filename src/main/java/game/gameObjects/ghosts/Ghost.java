@@ -18,7 +18,6 @@ public abstract class Ghost extends SpielElement implements Movable {
     protected BufferedImage imageUp;
     protected BufferedImage imageLeft;
     protected BufferedImage imageRight;
-    private double speed = 1;
 
     public Ghost(int xPos, int yPos, Direction direction) {
         super(xPos, yPos);
@@ -26,11 +25,23 @@ public abstract class Ghost extends SpielElement implements Movable {
     }
 
 
+    /**
+     * This method takes the current map of the java.game. First it evaluates the possible directions in which
+     * the ghost can moveElements. If the ghost has no possible way to moveElements, the method returns -> the turn get skipped.
+     * If there is only one way to go, the ghost will moveElements in this direction. If there are more than one possible ways to go,
+     * the direction from which the ghost came from gets <b>excluded</b> from the possible directions to moveElements to.
+     * After that the best of the remaining directions gets choosen. The way the best direction gets determinded is up to the
+     * implementation of the specific ghost.
+     *
+     *
+     * @param spielMap the map of the current java.game
+     * @return the spielMap of the current java.game with the changed position of the ghost
+     */
     @Override
     public SpielElement[][][] move(SpielElement[][][] spielMap) {
         ArrayList<Direction> possibleDirections = getPossibleDirections(spielMap);
         if (possibleDirections.size() == 0) return spielMap;
-        Direction newDirection = Direction.NONE;
+        Direction newDirection;
         if (possibleDirections.size() > 1) {
             Direction originDirection = Direction.invertDirection(direction);
             for (int i = 0; i < possibleDirections.size(); i++) {
@@ -75,6 +86,12 @@ public abstract class Ghost extends SpielElement implements Movable {
 
     }
 
+
+    /**
+     * moves the ghost to the direction: NORTH
+     * @param spielMap the map of the current java.game
+     * @return the ma of the current java.game with the updtated position of the ghost
+     */
     protected SpielElement[][][] moveNorth(SpielElement[][][] spielMap) {
 
         spielMap[xPosition][yPosition - 1][1] = this;
@@ -112,6 +129,11 @@ public abstract class Ghost extends SpielElement implements Movable {
     }
 
 
+    /**
+     * evaluates the possible directions in which the ghost can theoreticaly moveElements
+     * @param spielMap the map of the current java.game
+     * @return an ArrayList containing all the possible directions in which the ghost can moveElements
+     */
     protected ArrayList<Direction> getPossibleDirections(SpielElement[][][] spielMap) {
 
         ArrayList<Direction> possibleDirections = new ArrayList<>();

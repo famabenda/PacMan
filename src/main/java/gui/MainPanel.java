@@ -1,7 +1,6 @@
 package gui;
 
 import game.Game;
-import game.GameOrchestrator;
 import game.Map;
 import game.enums.Direction;
 import game.gameObjects.EmptySpace;
@@ -26,12 +25,10 @@ import java.io.IOException;
 public class MainPanel extends JPanel implements KeyListener {
 
 
-    private static final int pacDotSize = Gui.RESOLUTION / 2;
+    private static final int PAC_DOT_SIZE = Gui.RESOLUTION / 2;
 
     private static final Color backgroundColor = Color.black;
     private static final Color wallColor = Color.blue;
-    private static final Color pacDotColor = Color.YELLOW;
-    private static final Color playerColor = Color.RED;
 
 
     private BufferedImage pacDotImage;
@@ -74,11 +71,11 @@ public class MainPanel extends JPanel implements KeyListener {
         int res = Gui.RESOLUTION;
         for (int i = 0; i < map.getSpielMap().length; i++) {
             for (int j = 0; j < map.getSpielMap()[0].length; j++) {
-                double x=3;
+                double x = 3;
                 try {
                     x = map.getSpielMap()[i][j][0].getXPosition();
-                }catch (NullPointerException npe){
-                    Logger.debug("x: "+i+" y: "+j);
+                } catch (NullPointerException npe) {
+                    Logger.debug("x: " + i + " y: " + j);
                 }
                 double y = map.getSpielMap()[i][j][0].getYPosition();
                 if (map.getSpielMap()[i][j][0] instanceof Wall) {
@@ -97,35 +94,52 @@ public class MainPanel extends JPanel implements KeyListener {
                 if (map.getSpielMap()[i][j][0] instanceof Player) {
                     g.setColor(backgroundColor);
                     g.fillRect((int) x * res, (int) y * res, res, res);
-                    g2.setColor(playerColor);
-                    g2.fillRect((int) ((x * res) + res / 4), (int) ((y * res) + res / 4), pacDotSize, pacDotSize);
+//                    g2.setColor(playerColor);
+//                    g2.fillRect((int) ((x * res) + res / 4), (int) ((y * res) + res / 4), PAC_DOT_SIZE, PAC_DOT_SIZE);
+
+                    switch (Player.direction) {
+                        case EAST:
+                            paintImage(((Player) map.getSpielMap()[i][j][0]).getImageRight(), x, y, res, g);
+                            break;
+                        case SOUTH:
+                            paintImage(((Player) map.getSpielMap()[i][j][0]).getImageDown(), x, y, res, g);
+                            break;
+                        case NORTH:
+                            paintImage(((Player) map.getSpielMap()[i][j][0]).getImageUp(), x, y, res, g);
+                            break;
+                        case WEST:
+                            paintImage(((Player) map.getSpielMap()[i][j][0]).getImageLeft(), x, y, res, g);
+                            break;
+                    }
+
                 }
                 if (map.getSpielMap()[i][j][1] instanceof Ghost) {
 //                    g.setColor(backgroundColor);
 //                    g.fillRect((int) x * res, (int) y * res, res, res);
                     switch (((Ghost) map.getSpielMap()[i][j][1]).getDirection()) {
                         case EAST:
-                            paintGhost(((Ghost) map.getSpielMap()[i][j][1]).getImageRight(), x, y, res, g);
+                            paintImage(((Ghost) map.getSpielMap()[i][j][1]).getImageRight(), x, y, res, g);
                             break;
                         case SOUTH:
-                            paintGhost(((Ghost) map.getSpielMap()[i][j][1]).getImageDown(), x, y, res, g);
+                            paintImage(((Ghost) map.getSpielMap()[i][j][1]).getImageDown(), x, y, res, g);
                             break;
                         case NORTH:
-                            paintGhost(((Ghost) map.getSpielMap()[i][j][1]).getImageUp(), x, y, res, g);
+                            paintImage(((Ghost) map.getSpielMap()[i][j][1]).getImageUp(), x, y, res, g);
                             break;
                         case WEST:
-                            paintGhost(((Ghost) map.getSpielMap()[i][j][1]).getImageLeft(), x, y, res, g);
+                            paintImage(((Ghost) map.getSpielMap()[i][j][1]).getImageLeft(), x, y, res, g);
                             break;
                     }
 
                 }
             }
         }
-        g.setColor(Color.red);
-        g.drawString("Score: " +Game.collectedPacDots * GameOrchestrator.MULTIPLIER, 10,10);
+        g.setColor(Color.yellow);
+        g.setFont(new Font("impact", Font.BOLD, 30));
+        g.drawString("Score: " + Game.calcPlayerScore(), 10, 30);
     }
 
-    private void paintGhost(BufferedImage image, double x, double y, int res, Graphics g) {
+    private void paintImage(BufferedImage image, double x, double y, int res, Graphics g) {
         g.drawImage(scaleImage(image, res / 2), (int) ((x * res)) + (res / 2) - res / 4, (int) ((y * res) + (res / 2) - res / 4), null);
     }
 

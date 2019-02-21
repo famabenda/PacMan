@@ -1,5 +1,10 @@
 package game.enums;
 
+
+/**
+ * This class defines the characters which later on will be read an translated in the corosponding
+ * GameObject
+ */
 public enum MapElements {
     PACDOT_SYMBOL("*"),
     WALL_SYMBOL("#"),

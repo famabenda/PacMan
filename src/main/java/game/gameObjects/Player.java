@@ -3,23 +3,42 @@ package game.gameObjects;
 import game.Game;
 import game.GameOrchestrator;
 import game.enums.Direction;
+
 import lombok.Data;
 import utils.SoundPlayer;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 @Data
+/**
+ * This is the playable gamobject
+ */
 public class Player extends SpielElement implements Movable {
     public static Direction direction;
-    public static boolean tranistion = false;
     public static Direction lastPressedDirection = Direction.NONE;
-    private double speed = 1;
     public static int lives = GameOrchestrator.PLAYER_LIVES;
+
+    private BufferedImage imageDown;
+    private BufferedImage imageUp;
+    private BufferedImage imageLeft;
+    private BufferedImage imageRight;
 
 
     public Player(int xPos, int yPos, Direction direction) {
         super(xPos, yPos);
         this.direction = direction;
+        try {
+            imageDown = ImageIO.read(new File(getClass().getClassLoader().getResource("images/PacMan_MoveDown.gif").getFile()));
+            imageUp = ImageIO.read(new File(getClass().getClassLoader().getResource("images/PacMan_MoveUp.gif").getFile()));
+            imageLeft = ImageIO.read(new File(getClass().getClassLoader().getResource("images/PacMan_MoveLeft.gif").getFile()));
+            imageRight = ImageIO.read(new File(getClass().getClassLoader().getResource("images/PacMan_MoveRight.gif").getFile()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -60,6 +79,13 @@ public class Player extends SpielElement implements Movable {
         return possibleDirections;
     }
 
+
+    /**
+     *
+     * @param spielMap the current map
+     * @param direction the direction in which the player should move
+     * @return the map with the moved player
+     */
     private SpielElement[][][] movePlayer(SpielElement[][][] spielMap, Direction direction) {
         int spielerX = getXPosition();
         int spielerY = getYPosition();

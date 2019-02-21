@@ -85,6 +85,11 @@ public class Inky extends Ghost implements Movable {
     }
 
 
+    /**
+     *
+     * @param spielMap
+     * @return
+     */
     private Blinky findBlinkyOnMap(SpielElement[][][] spielMap) {
         for (SpielElement[][] ebene : spielMap) {
             for (SpielElement[] reihe : ebene) {

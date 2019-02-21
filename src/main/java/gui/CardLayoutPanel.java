@@ -6,6 +6,9 @@ import javax.swing.*;
 import java.awt.*;
 
 @Data
+/**
+ * The cardlayout which specifies which panel (MainPanel or MenuPanel) is displayed
+ */
 public class CardLayoutPanel extends JPanel {
 
 

@@ -14,11 +14,20 @@ public class Map {
 
     public static int ghostCount;
     private SpielElement[][][] spielMap;
+    private Player spieler;
 
     public Map(SpielElement[][][] map) {
         setSpielMap(map);
+        spieler = getSpielerFromMap();
     }
 
+    /**
+     * checks whether the given tile is a wall or a ghost
+     * @param x x-parameter of the given tile
+     * @param y y-parameter of the given tile
+     * @param spielMap the current gamemap
+     * @return whether the tile is a ghost or a wall
+     */
     public static boolean isWallOrGhost(int x, int y, SpielElement[][][] spielMap) {
         try {
             return spielMap[x][y][0] instanceof Wall || spielMap[x][y][1] instanceof Ghost;
@@ -27,7 +36,11 @@ public class Map {
         }
     }
 
-    public Player getSpieler() {
+    /**
+     * retrieves the player from the map
+     * @return the player-object fromthe current map
+     */
+    private Player getSpielerFromMap() {
         for (SpielElement[][] ebene : spielMap) {
             for (SpielElement[] reihe : ebene) {
                 for (SpielElement element : reihe) {
@@ -40,7 +53,11 @@ public class Map {
 
     }
 
-    public Ghost[] getGhosts() {
+    /**
+     * retrieves all ghosts from the current map
+     * @return an array of all ghosts on the map
+     */
+    private Ghost[] getGhostsFromMap() {
         Ghost[] ghosts = new Ghost[ghostCount];
         int index = 0;
 
@@ -57,6 +74,10 @@ public class Map {
         return ghosts;
     }
 
+    /**
+     * Checks whether there are pacdots left on the map
+     * @return the boolean if there are pacdots left
+     */
     public boolean pacDotsAvailable() {
         for (SpielElement[][] ebene : spielMap) {
             for (SpielElement[] reihe : ebene) {
@@ -69,13 +90,16 @@ public class Map {
         return false;
     }
 
-    public void move() {
-        if(getSpieler() == null) return ;
+    /**
+     * calles the move method on the player and the ghosts
+     */
+    public void moveElements() {
+        if (getSpieler() == null) return;
         spielMap = getSpieler().move(spielMap);
         GameOrchestrator.checkGameState();
-        Ghost[] ghosts = getGhosts();
+        Ghost[] ghosts = getGhostsFromMap();
 
-        if(ghosts.length<ghostCount) return;
+        if (ghosts.length < ghostCount) return;
         for (Ghost ghost : ghosts) {
             ghost.move(spielMap);
         }

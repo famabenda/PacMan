@@ -9,9 +9,12 @@ import javax.swing.*;
 
 
 @Data
+/**
+ * The java.gui holds some attributes
+ */
 public class Gui {
 
-    public static int RESOLUTION = 40;
+    public static final int RESOLUTION = 40;
     public static final int SCREEN_WIDTH = 25 * RESOLUTION;
     public static final int SCREEN_HEIGHT = 25 * RESOLUTION;
     public static int fps = 10;
@@ -40,7 +43,7 @@ public class Gui {
                             mainFrame.getCardLayoutPanel().getMainPanel().paintMap(currentMap);
                             this.wait(fps);
                         } catch (InterruptedException e) {
-                            Logger.error("Error in Thread which is responsible for drawing the game (paintGame())");
+                            Logger.error("Error in Thread which is responsible for drawing the java.game (paintGame())");
                             e.printStackTrace();
                         }
                     }

@@ -12,6 +12,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+
+/**
+ * Blinky is the red ghost in the PacMan-universe
+ */
 @Data
 public class Blinky extends Ghost implements Movable {
     public Blinky(int xPos, int yPos, Direction direction) {
@@ -21,11 +25,10 @@ public class Blinky extends Ghost implements Movable {
     }
 
 
+
     @Override
     public void loadSprites() {
         try {
-
-
             imageDown = ImageIO.read(new File(getClass().getClassLoader().getResource("images/Blinky_MoveDown.gif").getFile()));
             imageUp = ImageIO.read(new File(getClass().getClassLoader().getResource("images/Blinky_MoveUp.gif").getFile()));
             imageLeft = ImageIO.read(new File(getClass().getClassLoader().getResource("images/Blinky_MoveLeft.gif").getFile()));

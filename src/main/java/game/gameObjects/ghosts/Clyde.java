@@ -62,10 +62,4 @@ public class Clyde extends Ghost implements Movable {
         return possibleDirections.get((int) (possibleDirections.size() * Math.random() - 1));
     }
 
-
-    private int calcDistanceToPlayer(Player spieler) {
-        int spielerX = spieler.getXPosition(), spielerY = spieler.getYPosition();
-        return (int) Math.sqrt(Math.pow(spielerX - xPosition, 2) + Math.pow(spielerY - yPosition, 2));
-    }
-
 }
